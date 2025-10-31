@@ -58,6 +58,12 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
     },
+
+    fontFamily: {
+      inter:["var(--font-inter)", "sans-serif"],
+      kaisei:["var(--font-kaisei)", "serif"],
+      geistSans:["var(--font-geist)", "sans-serif"],
+    },
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
