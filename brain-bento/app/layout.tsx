@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Inter, Kaisei_HarunoUmi } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
+
+
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -19,6 +21,19 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const kaisei = Kaisei_HarunoUmi({
+  variable: "--font-kaisei",
+  subsets: ["latin"],
+  weight: ["400","700"],
+  display:"swap",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,13 +41,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased`}>
+      <body className={`${geistSans.className} ${kaisei.variable} ${inter.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-        >
+        >  
           {children}
         </ThemeProvider>
       </body>
