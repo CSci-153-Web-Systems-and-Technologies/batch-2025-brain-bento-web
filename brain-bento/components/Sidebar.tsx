@@ -16,7 +16,7 @@ export default function AppSideBar() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const supabase = createClient();
+      const supabase=createClient();
       const { data } = await supabase.auth.getUser();
       if (data?.user) {
         setUser({
@@ -41,28 +41,35 @@ export default function AppSideBar() {
 
         <nav className="flex flex-col items-center p-5 justify-center mt-10">
             <Link className="pb-4" href="/dashboard">
-                <Button variant="ghost" 
-                    className={`w-[220px] text-lg font-semibold p-2 pl-6 flex items-center justify-start gap-2  ${pathname === "/dashboard" ? "bg-[#2d3be] text-[3a3c4e]": "hover:bg-[#e4e5d6]"}`}>
-                        <LayoutDashboardIcon className="w-5 h-5 "/>
-                        Dashboard</Button>
-            </Link>
+            <Button variant="ghost"
+              className={`w-[220px] text-lg font-semibold p-2 pl-6 flex justify-start items-center 
+                ${pathname === "/dashboard" ? "text-[#669E7B] gap-3" : "hover:bg-[#e4e5d6]"}`}>
+              {pathname === "/dashboard" && (<span className="h-1 w-1 flex justify-self-start bg-[#669E7B] rounded-full" />)}
+              <LayoutDashboardIcon className="w-6 h-6" />
+              Dashboard
+            </Button>
+          </Link>
           
           <Link className="pb-4" href="/my-flashcard">
-            <Button variant="ghost" 
-                className={`w-[220px] text-lg font-semibold p-2 pl-6 flex items-center justify-start gap-2 ${pathname === "/dashboard" ? "bg-[#2d3be] text-[3a3c4e]": "hover:bg-[#e4e5d6]"}`}>
-                    <BookAIcon className="w-5 h-5 "/>
-                    My Flashcards</Button>
+            <Button variant="ghost"
+              className={`w-[220px] text-lg font-semibold p-2 pl-6 flex justify-start items-center 
+                ${pathname === "/my-flashcard" ? "text-[#669E7B] gap-3" : "hover:bg-[#e4e5d6]"}`}>
+              {pathname === "/my-flashcard" && (<span className="h-1 w-1 flex justify-self-start bg-[#669E7B] rounded-full" />)}
+              <BookAIcon className="w-6 h-6" />
+              My Flashcards
+            </Button>
           </Link>
+
           <Link className="pb-4" href="/create-flashcard">
             <Button variant="ghost" 
-                className={`w-[220px] text-lg font-semibold p-2 pl-6 flex items-center justify-start gap-2  ${pathname === "/dashboard" ? "bg-[#2d3be] text-[3a3c4e]": "hover:bg-[#e4e5d6]"}`}>
-                    <BookPlusIcon className="w-5 h-5 "/>
+                className={`w-[220px] text-lg font-semibold p-2 pl-6 flex items-center justify-start gap-2  ${pathname === "/create-flashcard" ? "bg-[#2d3be] text-[3a3c4e]": "hover:bg-[#e4e5d6]"}`}>
+                    <BookPlusIcon className="w-6 h-6 "/>
                     Create Flashcard</Button>
           </Link>
           <Link className="pb-4" href="/quiz-mode">
             <Button variant="ghost" 
-                className={`w-[220px] text-lg font-semibold p-2 pl-6 flex items-center justify-start gap-2  ${pathname === "/dashboard" ? "bg-[#2d3be] text-[3a3c4e]": "hover:bg-[#e4e5d6]"}`}>
-                    <BookCheckIcon className="w-5 h-5 "/>
+                className={`w-[220px] text-lg font-semibold p-2 pl-6 flex items-center justify-start gap-2  ${pathname === "/quiz-mode" ? "bg-[#2d3be] text-[3a3c4e]": "hover:bg-[#e4e5d6]"}`}>
+                    <BookCheckIcon className="w-6 h-6 "/>
                     Quiz Mode</Button>
           </Link>
         </nav>
