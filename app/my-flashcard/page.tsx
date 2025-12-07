@@ -16,16 +16,41 @@ export default function MyFlashcardPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return setLoading(false);
 
-      const { data, error } = await supabase
-        .from('sets')
-        .select('id, title, flashcards(id, term, definition)')
-        .eq('user_id', user.id);
+      // 1️⃣ Fetch sets from Supabase
+      const { data: setsData, error } = await supabase
+        .from("sets")
+        .select("id, title, date_created, user_id, flashcards(id, term, definition)")
+        .eq("user_id", user.id);
 
       if (error) {
-        console.log(error.message);
-      } else {
-        setSets(data ?? []);
+        console.error(error.message);
+        setLoading(false);
+        return;
       }
+
+      // 2️⃣ Fetch creator name (or email without @gmail.com)
+      const setsWithCreator = [];
+
+      for (const s of setsData ?? []) {
+        const { data: creator } = await supabase
+          .from("users")
+          .select("name, email")
+          .eq("auth_id", s.user_id)
+          .single();
+
+        const creatorName = creator?.name
+          ? creator.name
+          : creator?.email
+          ? creator.email.split("@")[0]
+          : "Unknown";
+
+        setsWithCreator.push({
+          ...s,
+          created_by: creatorName,
+        });
+      }
+
+      setSets(setsWithCreator);
       setLoading(false);
     };
 
