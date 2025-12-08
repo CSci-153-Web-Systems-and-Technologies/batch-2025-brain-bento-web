@@ -15,7 +15,7 @@ export default function MyFlashcardList({ sets, loading = false }: MyFlashcardLi
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="absolute top-0 left-64 right-0 p-6 pl-14 pr-14 flex flex-col gap-6 items-center font-kaisei text-[#3a3c4e]">
+    <div className="flex flex-col gap-6 items-center font-kaisei text-[#3a3c4e] pl-64">
       <h1 className="text-2xl pb-4 font-semibold pt-4 w-full">My Flashcards</h1>
 
       <div className="w-full text-md">
