@@ -19,7 +19,6 @@ export default function MyFlashcardPage() {
         return;
       }
 
-      // ✅ Use single query to fetch sets with flashcards
       const setsWithFlashcards = await getUserSetsWithFlashcards(user.email!);
       setSets(setsWithFlashcards);
       setLoading(false);

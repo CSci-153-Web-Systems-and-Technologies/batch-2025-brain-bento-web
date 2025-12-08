@@ -67,3 +67,38 @@ export async function getUserSetsWithFlashcards(currentUserEmail: string): Promi
 
   return setsWithFlashcards;
 }
+export async function getTotalFlashcards(userEmail: string): Promise<number> {
+  const supabase = createClient();
+
+  // Get user auth id
+  const { data: userRow, error: userError } = await supabase
+    .from("users")
+    .select("auth_id")
+    .eq("email", userEmail)
+    .single();
+
+  if (userError || !userRow) {
+    console.error("Error fetching user:", userError);
+    return 0;
+  }
+
+  const userAuthId = userRow.auth_id;
+
+  // Count all flashcards belonging to this user
+  const { count, error: countError } = await supabase
+    .from("flashcards")
+    .select("id", { count: "exact", head: true })
+    .in(
+      "set_id",
+      (await supabase.from("sets").select("id").eq("user_id", userAuthId)).data?.map(
+        (s) => s.id
+      ) || []
+    );
+
+  if (countError) {
+    console.error("Error counting flashcards:", countError);
+    return 0;
+  }
+
+  return count ?? 0;
+}
