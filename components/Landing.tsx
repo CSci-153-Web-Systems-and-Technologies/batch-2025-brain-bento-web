@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import TotalFlashcard from "@/components/TotalFlashcard";
 import AppSideBar from "@/components/Sidebar";
+import StudyStreakCard from "./StudyStreak";
 import { createClient } from "@/lib/supabase/client";
 
 export default function Dashboard() {
@@ -33,7 +34,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-6 items-center font-kaisei text-[#3a3c4e] pl-72 pt-11">
+    <div className="flex flex-col gap-6 items-center font-kaisei text-[#3a3c4e] pl-80 pt-11">
       <AppSideBar />
 
       <main className="flex-1 p-30">
@@ -47,6 +48,7 @@ export default function Dashboard() {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <TotalFlashcard />
+          <StudyStreakCard/>
         </div>
       </main>
     </div>
