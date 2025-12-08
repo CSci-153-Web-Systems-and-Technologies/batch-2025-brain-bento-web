@@ -40,7 +40,7 @@ export default function CreateSetForm() {
 
     const setId = setData.id;
 
-    // 2️⃣ Insert all flashcards at once
+   
     const { error: cardsError } = await supabase
       .from("flashcards")
       .insert(
@@ -49,7 +49,7 @@ export default function CreateSetForm() {
 
     if (cardsError) return alert(cardsError.message);
 
-    // Reset form
+ 
     setTitle("");
     setFlashcards([{ term: "", definition: "" }]);
     alert("Flashcard set created successfully!");

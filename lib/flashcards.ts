@@ -14,6 +14,7 @@ export type FlashcardSet = {
   created_by?: string | null;
 };
 
+
 export async function getUserSetsWithFlashcards(currentUserEmail: string): Promise<FlashcardSet[]> {
   const supabase = createClient();
 
@@ -34,50 +35,35 @@ export async function getUserSetsWithFlashcards(currentUserEmail: string): Promi
   
   const { data: setsData, error: setsError } = await supabase
     .from("sets")
-    .select("id, title, date_created, user_id, flashcards(id, term, definition)")
+    .select("id, title, date_created, user_id")
     .eq("user_id", userAuthId);
 
-  if (setsError) {
+  if (setsError || !setsData) {
     console.error("Error fetching sets:", setsError);
     return [];
   }
 
-  const sets: FlashcardSet[] = [];
+ 
+  const setsWithFlashcards: FlashcardSet[] = [];
 
-  // 3️⃣ For each set, fetch the creator info from users table
-  for (const row of setsData ?? []) {
-    let creatorName = "Unknown";
+  for (const set of setsData) {
+    const { data: flashcardsData, error: flashcardsError } = await supabase
+      .from("flashcards")
+      .select("id, term, definition")
+      .eq("set_id", set.id);
 
-    try {
-      const { data: creatorRow, error: creatorError } = await supabase
-        .from("users")
-        .select("name, email")
-        .eq("auth_id", row.user_id)
-        .single();
-
-      if (!creatorError && creatorRow) {
-        creatorName = creatorRow.name
-          ? creatorRow.name
-          : creatorRow.email
-          ? creatorRow.email.split("@")[0]
-          : "Unknown";
-      }
-    } catch (err) {
-      console.error("Error fetching creator info:", err);
+    if (flashcardsError) {
+      console.error(`Error fetching flashcards for set ${set.id}:`, flashcardsError);
     }
 
-    sets.push({
-      id: String(row.id),
-      title: row.title,
-      date_created: row.date_created,
-      created_by: creatorName,
-      flashcards: (row.flashcards ?? []).map((fc: any) => ({
-        id: String(fc.id),
-        term: fc.term,
-        definition: fc.definition,
-      })),
+    setsWithFlashcards.push({
+      id: set.id,
+      title: set.title,
+      date_created: set.date_created,
+      created_by: userRow.name ?? userRow.email.split("@")[0],
+      flashcards: flashcardsData ?? [],
     });
   }
 
-  return sets;
+  return setsWithFlashcards;
 }
