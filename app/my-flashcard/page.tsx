@@ -3,8 +3,8 @@
 import AppSideBar from '@/components/Sidebar';
 import MyFlashcardList from '@/components/MyFlashcardList';
 import { useEffect, useState } from 'react';
+import { getUserSetsWithFlashcards, FlashcardSet } from '@/lib/flashcards';
 import { createClient } from '@/lib/supabase/client';
-import { FlashcardSet } from '@/lib/flashcards';
 
 export default function MyFlashcardPage() {
   const [sets, setSets] = useState<FlashcardSet[]>([]);
@@ -14,43 +14,14 @@ export default function MyFlashcardPage() {
     const fetchSets = async () => {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return setLoading(false);
-
-      // 1️⃣ Fetch sets from Supabase
-      const { data: setsData, error } = await supabase
-        .from("sets")
-        .select("id, title, date_created, user_id, flashcards(id, term, definition)")
-        .eq("user_id", user.id);
-
-      if (error) {
-        console.error(error.message);
+      if (!user) {
         setLoading(false);
         return;
       }
 
-      // 2️⃣ Fetch creator name (or email without @gmail.com)
-      const setsWithCreator = [];
-
-      for (const s of setsData ?? []) {
-        const { data: creator } = await supabase
-          .from("users")
-          .select("name, email")
-          .eq("auth_id", s.user_id)
-          .single();
-
-        const creatorName = creator?.name
-          ? creator.name
-          : creator?.email
-          ? creator.email.split("@")[0]
-          : "Unknown";
-
-        setsWithCreator.push({
-          ...s,
-          created_by: creatorName,
-        });
-      }
-
-      setSets(setsWithCreator);
+      // ✅ Use single query to fetch sets with flashcards
+      const setsWithFlashcards = await getUserSetsWithFlashcards(user.email!);
+      setSets(setsWithFlashcards);
       setLoading(false);
     };
 
