@@ -62,13 +62,17 @@ export default function AppSideBar() {
 
           <Link className="pb-4" href="/create-flashcard">
             <Button variant="ghost" 
-                className={`w-[220px] text-lg font-semibold p-2 pl-6 flex items-center justify-start gap-2  ${pathname === "/create-flashcard" ? "bg-[#2d3be] text-[3a3c4e]": "hover:bg-[#e4e5d6]"}`}>
+                className={`w-[220px] text-lg font-semibold p-2 pl-6 flex justify-start items-center
+                 ${pathname === "/create-flashcard" ? "text-[#669E7B] gap-3": "hover:bg-[#e4e5d6]"}`}>
+                  {pathname === "/create-flashcard" && (<span className="h-1 w-1 flex justify-self-start bg-[#669E7B] rounded-full" />)}
                     <BookPlusIcon className="w-6 h-6 "/>
                     Create Flashcard</Button>
           </Link>
           <Link className="pb-4" href="/quiz-mode">
             <Button variant="ghost" 
-                className={`w-[220px] text-lg font-semibold p-2 pl-6 flex items-center justify-start gap-2  ${pathname === "/quiz-mode" ? "bg-[#2d3be] text-[3a3c4e]": "hover:bg-[#e4e5d6]"}`}>
+                className={`w-[220px] text-lg font-semibold p-2 pl-6 flex justify-start items-center 
+                 ${pathname === "/quiz-mode" ? "text-[#669E7B] gap-3": "hover:bg-[#e4e5d6]"}`}>
+                 {pathname === "/quiz-mode" && (<span className="h-1 w-1 flex justify-self-start bg-[#669E7B] rounded-full" />)} 
                     <BookCheckIcon className="w-6 h-6 "/>
                     Quiz Mode</Button>
           </Link>
