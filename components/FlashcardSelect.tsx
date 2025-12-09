@@ -45,13 +45,13 @@ export default function QuizSetSelector({ onSelect }: QuizSetSelectorProps) {
   }, [selectedSet]);
 
   return (
-    <div className="p-6 max-w-md mx-auto">
+    <div className=" max-w-md  w-full p-6">
     <label className="font-semibold pb-2 block">Flashcard Title</label>
 
     <select
         value={selectedSet}
         onChange={(e) => setSelectedSet(e.target.value)}
-        className="w-full rounded-lg p-4 text-sm font-semibold bg-[#f1f2eb] border border-black">
+        className="w-[400px] rounded-lg p-4 text-sm font-semibold bg-[#f1f2eb] border border-black">
         <option value="">Select a Flashcard Set</option>
         {sets.map((set) => (
         <option key={set.id} value={set.id}>
