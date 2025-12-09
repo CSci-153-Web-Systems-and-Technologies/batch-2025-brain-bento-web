@@ -43,7 +43,7 @@ export default function RecentFlashcardSets({ limit = 5 }: RecentFlashcardSetsPr
 
   return (
     <div className="w-full text-md rounded-lg p-7 bg-[#cddfd1] flex flex-col gap-3 ">
-        <h2 className="text-xl font-bold">Recents</h2>
+        <h2 className="text-xl font-bold pb-3">Recently created:</h2>
       {recentSets.map((set) => (
         <div
           key={set.id}
@@ -52,7 +52,6 @@ export default function RecentFlashcardSets({ limit = 5 }: RecentFlashcardSetsPr
         >
           <h2 className="font-bold text-lg">{set.title}</h2>
           <p className="text-sm text-gray-500 font-inter mt-1">
-            {set.created_by ?? "Unknown"} |{" "}
             {set.date_created
               ? new Date(set.date_created).toLocaleString("en-GB", {
                   day: "2-digit",
