@@ -18,7 +18,7 @@ export default function Dashboard() {
       // Fetch user info from 'users' table
       const { data: userRow, error } = await supabase
         .from("users")
-        .select("name, email")
+        .select("username, email")
         .eq("email", user.email)
         .single();
 
@@ -27,7 +27,7 @@ export default function Dashboard() {
         return;
       }
 
-      setUserName(userRow?.name ?? user.email?.split("@")[0]);
+      setUserName(userRow?.username ?? user.email?.split("@")[0]);
     };
 
     fetchUser();
