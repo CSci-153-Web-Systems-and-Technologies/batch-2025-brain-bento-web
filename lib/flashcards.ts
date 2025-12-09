@@ -21,7 +21,7 @@ export async function getUserSetsWithFlashcards(currentUserEmail: string): Promi
   
   const { data: userRow, error: userError } = await supabase
     .from("users")
-    .select("auth_id, name, email")
+    .select("auth_id, username, email")
     .eq("email", currentUserEmail)
     .single();
 
@@ -60,7 +60,7 @@ export async function getUserSetsWithFlashcards(currentUserEmail: string): Promi
       id: set.id,
       title: set.title,
       date_created: set.date_created,
-      created_by: userRow.name ?? userRow.email.split("@")[0],
+      created_by: userRow.username ?? userRow.email.split("@")[0],
       flashcards: flashcardsData ?? [],
     });
   }
