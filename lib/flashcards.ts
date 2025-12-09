@@ -15,6 +15,7 @@ export type FlashcardSet = {
 };
 
 
+
 export async function getUserSetsWithFlashcards(currentUserEmail: string): Promise<FlashcardSet[]> {
   const supabase = createClient();
 
