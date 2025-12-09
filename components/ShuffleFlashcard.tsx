@@ -7,22 +7,18 @@ interface Flashcard {
   id: string;
   term: string;
   definition: string;
-  // add other fields if needed
 }
 
 interface ShuffleFlashcardsProps {
   selectedSet: string | null;
-  onShuffle: (shuffled: Flashcard[]) => void; // callback to pass the shuffled array to QuizMode
+  onShuffle: (shuffled: Flashcard[]) => void;
+  isActive?: boolean; // allow visual active state
 }
 
-export default function ShuffleFlashcards({ selectedSet, onShuffle }: ShuffleFlashcardsProps) {
+export default function ShuffleFlashcards({ selectedSet, onShuffle, isActive }: ShuffleFlashcardsProps) {
   const supabase = createClient();
-
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [loading, setLoading] = useState(false);
-  const [isActive, setIsActive] = useState(false);
-
-
 
   const shuffleArray = <T,>(array: T[]): T[] => {
     const shuffled = [...array];
@@ -32,6 +28,7 @@ export default function ShuffleFlashcards({ selectedSet, onShuffle }: ShuffleFla
     }
     return shuffled;
   };
+
   useEffect(() => {
     if (!selectedSet) return;
 
@@ -54,30 +51,23 @@ export default function ShuffleFlashcards({ selectedSet, onShuffle }: ShuffleFla
     fetchFlashcards();
   }, [selectedSet]);
 
-  
-  const handleShuffle = () => {
-    if (flashcards.length === 0) return; 
+  const handleShuffleClick = () => {
+    if (!flashcards.length) return;
     const shuffled = shuffleArray(flashcards);
-    onShuffle(shuffled); 
+    onShuffle(shuffled);
   };
 
   return (
-    <div className="">
-    <button
-        onClick={() => {
-        handleShuffle();
-        setIsActive((prev) => !prev);
-        }}
-        className={`px-4 py-4 rounded-lg font-semibold 
-        ${isActive ? "bg-[#8fd0f9]" : "bg-[#aad3eb]"} 
-        hover:bg-[#98cef0]`}
-    >
+    <div>
+      <button
+        onClick={handleShuffleClick}
+        className={`px-4 py-2 rounded-lg font-semibold ${
+          isActive ? "bg-[#8fd0f9]" : "bg-[#aad3eb]"
+        } hover:bg-[#98cef0]`}
+      >
         Shuffle Cards
-    </button>
-
-    {loading && <p className="text-gray-500 text-sm mt-2">Loading flashcards...</p>}
+      </button>
+      {loading && <p className="text-gray-500 text-sm mt-2">Loading flashcards...</p>}
     </div>
-
-
   );
 }
