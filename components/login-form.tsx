@@ -47,58 +47,76 @@ export function LoginForm({
     }
   };
 
-  return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+ return (
+  <div
+    className={cn(
+      "min-h-screen w-full bg-cover bg-center bg-no-repeat",
+      className
+    )}
+    style={{
+      backgroundImage: "url('/background.jpg')",
+    }}
+    {...props}
+  >
+    
+    <div className="h-full flex items-center pl-24  pt-20">
+     
+      <Card className="w-[460px] min-h-[500px] p-8 shadow-xl rounded-3xl font-kaisei bg-[#f1f2eb]">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
+          <CardTitle className="text-3xl flex justify-center items-center text-[#3a3c4e]">Login</CardTitle>
+          <CardDescription   className="flex  items-center justify-center text-[#3a3c4e] text-md pb-4">
+            A calm  mind learns best-welcome.
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <form onSubmit={handleLogin}>
             <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+              <div className="grid gap-2 rounded-full ">
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="Email"
+                  className="p-8 rounded-full font-semibold text-[#3a3c4e] border border-[#5f6172]"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
+
               <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="/auth/forgot-password"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
+                
+
                 <Input
                   id="password"
                   type="password"
+                  placeholder="Password"
+                  className="p-8 rounded-full border border-[#5f6172]  font-semibold text-[#3a3c4e]"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+
+                <div className="flex items-center">
+                  <Link
+                    href="/auth/forgot-password"
+                    className="ml-auto text-sm underline-offset-4 hover:underline font-bold"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
               </div>
+
               {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
+
+              <Button type="submit" className="w-full  bg-[#b2d3be]  hover:bg-[#94c8a7] text-[#3a3c4e] font-bold border border-[#9fb6a4] text-xl rounded-full p-8" disabled={isLoading}>
                 {isLoading ? "Logging in..." : "Login"}
               </Button>
             </div>
+
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <Link
-                href="/auth/sign-up"
-                className="underline underline-offset-4"
-              >
+              Don’t have an account?{" "}
+              <Link href="/auth/sign-up" className="underline underline-offset-4">
                 Sign up
               </Link>
             </div>
@@ -106,5 +124,6 @@ export function LoginForm({
         </CardContent>
       </Card>
     </div>
-  );
+  </div>
+);
 }
