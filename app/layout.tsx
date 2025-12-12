@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Inter, Kaisei_HarunoUmi } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import Header from "@/components/Header";
 import "./globals.css";
-
-
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -15,8 +12,7 @@ export const metadata: Metadata = {
   title: "BrainBento",
   description: "Study smarter with interactive flashcards and ace your exams",
   icons: {
-    icon: "./favicon.ico",
-    apple:  "./favicon.ico",
+    icon: "/favicon.ico",
   },
 };
 
@@ -39,7 +35,11 @@ const kaisei = Kaisei_HarunoUmi({
   display:"swap",
 });
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} ${kaisei.variable} ${inter.variable} antialiased`}>
@@ -48,8 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-        >
-          <Header /> {/* Add it here */}
+        >  
           {children}
         </ThemeProvider>
       </body>
