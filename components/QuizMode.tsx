@@ -23,7 +23,7 @@ export default function QuizMode() {
   const handleSelect = (setId: string, count: number) => {
     setSelectedSet(setId);
     setFlashcardCount(count);
-    setIsShuffled(false); // reset shuffle when user selects a new set
+    setIsShuffled(false); 
   };
 
   const handleShuffle = (cards: Flashcard[]) => {
@@ -36,7 +36,7 @@ export default function QuizMode() {
 
     let cardsToUse = shuffledCards;
 
-    // If no shuffle was done, fetch the cards in original order
+    
     if (cardsToUse.length === 0) {
       const supabase = createClient();
       const { data, error } = await supabase
@@ -52,7 +52,7 @@ export default function QuizMode() {
       cardsToUse = data;
     }
 
-    // Save set title as the setId for now (replace with actual title if available)
+    
     sessionStorage.setItem("setTitle", selectedSet);
     sessionStorage.setItem("shuffledCards", JSON.stringify(cardsToUse));
 
@@ -76,18 +76,26 @@ export default function QuizMode() {
             <div className="flex gap-2">
               <div className="flex-col">
                 <FlashcardSelect onSelect={handleSelect} />
+                
+                
+                {flashcardCount !== null && (
+                  <p className="pt-2 font-semibold">
+                    Number of flashcards in this set: {flashcardCount}
+                  </p>
+                )}
               </div>
+
               <div className="pt-6 flex-shrink-0">
                 <p className="font-semibold pb-2">Options</p>
                 <ShuffleFlashcards
                   selectedSet={selectedSet}
                   onShuffle={handleShuffle}
-                  isActive={isShuffled} // show active state
+                  isActive={isShuffled} 
                 />
               </div>
             </div>
 
-            {/* Start Quiz Button */}
+            
             <div className="mt-6">
               <button
                 onClick={startQuiz}

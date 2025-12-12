@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Flashcard } from "@/lib/flashcards";
+
 
 export default function CreateSetForm() {
   const supabase = createClient();
@@ -16,12 +16,12 @@ export default function CreateSetForm() {
     setFlashcards(newFlashcards);
   };
 
-  // Add another flashcard input
+  
   const handleAddFlashcardInput = () => {
     setFlashcards([...flashcards, { term: "", definition: "" }]);
   };
 
-  // Create set + flashcards
+  
   const handleCreateSet = async () => {
     if (!title.trim()) return alert("Enter a set title");
     if (flashcards.some((c) => !c.term || !c.definition)) return alert("Fill in all flashcards");
@@ -29,7 +29,7 @@ export default function CreateSetForm() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return alert("You must be logged in");
 
-    // 1️⃣ Create the set
+    
     const { data: setData, error: setError } = await supabase
       .from("sets")
       .insert([{ title, user_id: user.id }])
