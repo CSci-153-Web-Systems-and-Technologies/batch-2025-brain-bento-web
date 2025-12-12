@@ -7,14 +7,19 @@ interface QuizSetSelectorProps {
   onSelect: (setId: string, count: number) => void; 
 }
 
+interface FlashcardSet {
+  id: string;
+  title: string;
+}
+
 export default function QuizSetSelector({ onSelect }: QuizSetSelectorProps) {
   const supabase = createClient();
 
-  const [sets, setSets] = useState<any[]>([]);
+  const [sets, setSets] = useState<FlashcardSet[]>([]);
   const [selectedSet, setSelectedSet] = useState<string>("");
   const [flashcardCount, setFlashcardCount] = useState<number | null>(null);
 
-  // Fetch sets
+ 
   useEffect(() => {
     async function loadSets() {
       const { data, error } = await supabase
@@ -25,9 +30,9 @@ export default function QuizSetSelector({ onSelect }: QuizSetSelectorProps) {
     }
 
     loadSets();
-  }, []);
+  }, [supabase]);
 
-  // Fetch count when set changes
+  
   useEffect(() => {
     async function fetchCount() {
       if (!selectedSet) return;
@@ -42,33 +47,31 @@ export default function QuizSetSelector({ onSelect }: QuizSetSelectorProps) {
     }
 
     fetchCount();
-  }, [selectedSet]);
+  }, [selectedSet, supabase, onSelect]);
 
   return (
-    <div className=" max-w-md  w-full p-6">
-    <label className="font-semibold pb-2 block">Flashcard Title</label>
+    <div className="max-w-md w-full p-6">
+      <label className="font-semibold pb-2 block">Flashcard Title</label>
 
-    <select
+      <select
         value={selectedSet}
         onChange={(e) => setSelectedSet(e.target.value)}
-        className="w-[400px] rounded-lg p-4 text-sm font-semibold bg-[#f1f2eb] border border-black">
+        className="w-[400px] rounded-lg p-4 text-sm font-semibold bg-[#f1f2eb] border border-black"
+      >
         <option value="">Select a Flashcard Set</option>
         {sets.map((set) => (
-        <option key={set.id} value={set.id}>
+          <option key={set.id} value={set.id}>
             {set.title}
-        </option>
+          </option>
         ))}
-    </select>
+      </select>
 
-     <p className="pt-3 pb-2 font-semibold">Number of  cards selected</p>
-    <div className=" p-4 rounded-xl bg-[#f1f2eb]  border border-black">
-       
+      <p className="pt-3 pb-2 font-semibold">Number of cards selected</p>
+      <div className="p-4 rounded-xl bg-[#f1f2eb] border border-black">
         <p className="font-semibold text-sm">
-        {" "} <span className="text-[#3a3c4e]">{flashcardCount ?? 0}</span>  cards  selected
-        
+          <span className="text-[#3a3c4e]">{flashcardCount ?? 0}</span> cards selected
         </p>
+      </div>
     </div>
-    </div>
-
   );
 }
